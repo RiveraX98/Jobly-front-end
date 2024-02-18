@@ -1,0 +1,17 @@
+body{
+    background-image: url("https://cdn.wallpapersafari.com/93/81/yfa9xj.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+
+}
+
+.title{
+    color: white;
+    text-shadow: black 3px 2px;
+    
+}
+
+.Homepage{
+    display: flex;
+}
