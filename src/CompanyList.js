@@ -11,7 +11,7 @@ export const CompanyList = () => {
   const [search, setSearch] = useState("");
   const user = useContext(UserContext);
 
-  if (!user) {
+  if (!user.currUser) {
     <Navigate to="/" />;
   }
 

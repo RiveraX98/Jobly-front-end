@@ -23,7 +23,7 @@ export const ProfileCard = () => {
                   name="username"
                   type="text"
                   className="form-control"
-                  placeholder={user.username}
+                  placeholder={username}
                   disabled
                 />
               </div>
@@ -35,7 +35,7 @@ export const ProfileCard = () => {
                   name="firstName"
                   type="text"
                   className="form-control"
-                  defaultValue={user.firstName}
+                  defaultValue={user.currUser.firstName}
                 />
               </div>
 
@@ -46,7 +46,7 @@ export const ProfileCard = () => {
                   name="lastName"
                   type="text"
                   className="form-control"
-                  defaultValue={user.lastName}
+                  defaultValue={user.currUser.lastName}
                 />
               </div>
               <div className="mb-3">
@@ -56,7 +56,7 @@ export const ProfileCard = () => {
                   name="email"
                   type="text"
                   className="form-control"
-                  defaultValue={user.email}
+                  defaultValue={user.currUser.email}
                 />
               </div>
 

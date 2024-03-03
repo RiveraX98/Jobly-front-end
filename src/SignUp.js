@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Card, CardBody, Button } from "reactstrap";
-import { Form } from "react-router-dom";
-import { useActionData, redirect } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 import JoblyApi from "./api";
 
 export const SignUp = () => {
-  let data = useActionData();
+  const navigate = useNavigate();
+  const [error, setError] = useState();
+  const { user, updateCurrUser } = useContext(UserContext);
+
+  const INITIAL_STATE = {
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
+
+  const [formData, setFormData] = useState(INITIAL_STATE);
+
+  const handleChange = (e) => {
+    setFormData((data) => ({
+      ...data,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await JoblyApi.register(formData);
+      JoblyApi.token = res.token;
+      window.localStorage.setItem("token", res.token);
+      setFormData(INITIAL_STATE);
+      updateCurrUser(res.token);
+      navigate("/");
+    } catch (err) {
+      setError(err);
+    }
+  };
 
   return (
     <div className="mt-5">
@@ -13,7 +45,7 @@ export const SignUp = () => {
         <h3 className="title">Sign Up</h3>
         <Card>
           <CardBody>
-            <Form method="post" action="/signup">
+            <Form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="username">Username </label>
                 <input
@@ -21,6 +53,7 @@ export const SignUp = () => {
                   name="username"
                   type="text"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -31,6 +64,7 @@ export const SignUp = () => {
                   name="password"
                   type="password"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -41,6 +75,7 @@ export const SignUp = () => {
                   name="firstName"
                   type="text"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -51,6 +86,7 @@ export const SignUp = () => {
                   name="lastName"
                   type="text"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-3">
@@ -60,12 +96,13 @@ export const SignUp = () => {
                   name="email"
                   type="text"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
-              {data?.error && (
+              {error && (
                 <div className="alert alert-danger" role="alert">
-                  <p className="mb-0 small">{data.error}</p>
+                  <p className="mb-0 small">{error}</p>
                 </div>
               )}
 
@@ -82,23 +119,23 @@ export const SignUp = () => {
   );
 };
 
-export const RegisterFormAction = async ({ request }) => {
-  const data = await request.formData();
-  const submission = {
-    username: data.get("username"),
-    password: data.get("password"),
-    firstName: data.get("firstName"),
-    lastName: data.get("lastName"),
-    email: data.get("email"),
-  };
+// export const RegisterFormAction = async ({ request }) => {
+//   const data = await request.formData();
+//   const submission = {
+//     username: data.get("username"),
+//     password: data.get("password"),
+//     firstName: data.get("firstName"),
+//     lastName: data.get("lastName"),
+//     email: data.get("email"),
+//   };
 
-  try {
-    const res = await JoblyApi.register(submission);
-    JoblyApi.token = res.token;
-    window.localStorage.setItem("token", res.token);
-  } catch (err) {
-    return { error: err };
-  }
+//   try {
+//     const res = await JoblyApi.register(submission);
+//     JoblyApi.token = res.token;
+//     window.localStorage.setItem("token", res.token);
+//   } catch (err) {
+//     return { error: err };
+//   }
 
-  return redirect("/");
-};
+//   return redirect("/");
+// };

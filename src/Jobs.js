@@ -8,7 +8,8 @@ import { UserContext } from "./UserContext";
 export const Jobs = () => {
   const user = useContext(UserContext);
 
-  if (!user) {
+  console.log("JOB User", user);
+  if (!user.currUser) {
     <Navigate to="/" />;
   }
 
@@ -57,7 +58,7 @@ export const Jobs = () => {
         {jobs.map((job) => (
           <li style={{ listStyle: "none" }} key={job.id}>
             <JobCard
-              user={user}
+              user={user.currUser}
               id={job.id}
               salary={job.salary}
               equity={job.equity}

@@ -8,15 +8,13 @@ import { LinkContainer } from "react-router-bootstrap";
 export const JoblyNavbar = () => {
   const user = useContext(UserContext);
 
-  useEffect(() => {}, [user]);
-
   return (
     <div>
       <Navbar bg="light" data-bs-theme="light">
         <LinkContainer className="ms-3" to="/">
           <Navbar.Brand>Jobly</Navbar.Brand>
         </LinkContainer>
-        {user ? (
+        {user.currUser ? (
           <Nav className="ms-auto">
             <LinkContainer to="/companies">
               <Nav.Link>Companies</Nav.Link>
@@ -26,7 +24,7 @@ export const JoblyNavbar = () => {
               <Nav.Link>Jobs</Nav.Link>
             </LinkContainer>
 
-            <LinkContainer to={`/profile/${user.username}`}>
+            <LinkContainer to={`/profile/${user.currUser.username}`}>
               <Nav.Link>Profile</Nav.Link>
             </LinkContainer>
 

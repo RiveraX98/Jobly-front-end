@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Card, CardBody, Button } from "reactstrap";
-import { Form, redirect, useActionData } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import JoblyApi from "./api";
-
+import { UserContext } from "./UserContext";
 export const Login = () => {
-  let data = useActionData();
+  const navigate = useNavigate();
+  const [error, setError] = useState();
+  const { user, updateCurrUser } = useContext(UserContext);
+
+  const INITIAL_STATE = {
+    username: "",
+    password: "",
+  };
+
+  const [formData, setFormData] = useState(INITIAL_STATE);
+
+  const handleChange = (e) => {
+    setFormData((data) => ({
+      ...data,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await JoblyApi.login(formData);
+      JoblyApi.token = res.token;
+      window.localStorage.setItem("token", res.token);
+      setFormData(INITIAL_STATE);
+      updateCurrUser(res.token);
+      navigate("/");
+    } catch (err) {
+      setError(err);
+    }
+  };
+
   return (
     <div className="mt-5">
       <div className="col-lg-4 offset-lg-4">
         <h3 className="title">Login</h3>
         <Card>
           <CardBody>
-            <Form method="post" action="/login">
+            <Form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="username">Username </label>
                 <input
@@ -20,6 +50,7 @@ export const Login = () => {
                   type="text"
                   formAction="/profile"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -30,12 +61,13 @@ export const Login = () => {
                   name="password"
                   type="password"
                   className="form-control"
+                  onChange={handleChange}
                 />
               </div>
 
-              {data?.error && (
+              {error && (
                 <div className="alert alert-danger" role="alert">
-                  <p className="mb-0 small">{data.error}</p>
+                  <p className="mb-0 small">{error}</p>
                 </div>
               )}
 
@@ -50,22 +82,4 @@ export const Login = () => {
       </div>
     </div>
   );
-};
-
-export const LoginFormAction = async ({ request }) => {
-  const data = await request.formData();
-  const submission = {
-    username: data.get("username"),
-    password: data.get("password"),
-  };
-
-  try {
-    const res = await JoblyApi.login(submission);
-    JoblyApi.token = res.token;
-    window.localStorage.setItem("token", res.token);
-  } catch (err) {
-    return { error: err };
-  }
-
-  return redirect("/");
 };

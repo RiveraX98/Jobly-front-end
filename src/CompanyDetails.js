@@ -34,7 +34,7 @@ export const CompanyDetails = () => {
                   salary={job.salary}
                   equity={job.equity}
                   title={job.title}
-                  user={user}
+                  user={user.currUser}
                 />
               </li>
             ))}

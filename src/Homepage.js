@@ -4,7 +4,6 @@ import { UserContext } from "./UserContext";
 
 export const Homepage = () => {
   const user = useContext(UserContext);
-  console.log("HOMEPAGEUSER:", user);
 
   return (
     <div className="pt-5">
@@ -13,8 +12,10 @@ export const Homepage = () => {
           <div>
             <h1 className="title mb-4 fw-bold">Jobly</h1>
             <p className="title lead">All jobs in one, convenient place.</p>
-            {user ? (
-              <h2 className="title">Welcome Back, {user.firstName}! </h2>
+            {user.currUser ? (
+              <h2 className="title">
+                Welcome Back, {user.currUser.firstName}!{" "}
+              </h2>
             ) : (
               <div>
                 <Button className="me-3 fw-bold" color="primary" href="/login">
