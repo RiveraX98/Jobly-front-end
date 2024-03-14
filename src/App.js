@@ -15,11 +15,8 @@ import { Logout } from "./Logout";
 import { CompanyList } from "./CompanyList";
 import { CompanyDetails } from "./CompanyDetails";
 import { Jobs } from "./Jobs";
-
 import { Login } from "./Login";
 import { SignUp } from "./SignUp";
-import { RegisterFormAction } from "./SignUp";
-
 import { EditProfileAction, ProfileCard } from "./ProfileCard";
 import JoblyApi from "./api";
 import Root from "./Root";

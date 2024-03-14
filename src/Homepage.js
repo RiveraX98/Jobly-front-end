@@ -6,10 +6,10 @@ export const Homepage = () => {
   const user = useContext(UserContext);
 
   return (
-    <div className="pt-5">
-      <div className="Homepage">
-        <Container className="text-center">
-          <div>
+    <div className="my-5">
+      <div className="homepage">
+        <div className="text-center">
+          <div className="justify-content-center">
             <h1 className="title mb-4 fw-bold">Jobly</h1>
             <p className="title lead">All jobs in one, convenient place.</p>
             {user.currUser ? (
@@ -27,7 +27,7 @@ export const Homepage = () => {
               </div>
             )}
           </div>
-        </Container>
+        </div>
       </div>
     </div>
   );
